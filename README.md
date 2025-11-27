@@ -70,7 +70,7 @@ walker/
 
 2. Clone or copy the walker package into your workspace:
    ```bash
-   git clone https://github.com/Madhav2133/my_webots_tutorails.git
+   git clone https://github.com/Madhav2133/my_webots_tutorials.git
    ```
 
 3. Source your ROS2 environment (if not already sourced):
@@ -143,8 +143,15 @@ Bag files are automatically recorded when `record_bag:=true` (default). The reco
 To see what topics are recorded in a bag file:
 
 ```bash
-ros2 bag info my_webots_tutorials/results/walker_bag/
+ros2 bag info <path_to_bag>
 ```
+
+You can replace <path_to_bag> with your bag's path like:
+
+```bash
+ros2 bag info src/my_webots_tutorials/results/walker_bag/
+```
+
 
 This will display:
 - Bag file duration
@@ -153,7 +160,7 @@ This will display:
 - Storage format
 
 ### Example Output:
-```
+```c#
 Files:             walker_bag_0.db3
 Bag size:          1.2 MiB
 Storage id:        sqlite3
@@ -184,7 +191,7 @@ Topic information: Topic: /right_sensor | Type: sensor_msgs/msg/Range | Count: 3
 
 3. Play back the bag file:
    ```bash
-   ros2 bag play my_webots_tutorials/results/walker_bag/
+   ros2 bag play src/my_webots_tutorials/results/walker_bag/
    ```
 
 4. In another terminal, you can monitor topics:
@@ -201,17 +208,17 @@ Topic information: Topic: /right_sensor | Type: sensor_msgs/msg/Range | Count: 3
 
 Play at a specific rate (e.g., 2x speed):
 ```bash
-ros2 bag play my_webots_tutorials/results/walker_bag/ --rate 2.0
+ros2 bag play src/my_webots_tutorials/results/walker_bag/ --rate 2.0
 ```
 
 Play only specific topics:
 ```bash
-ros2 bag play my_webots_tutorials/results/walker_bag/ --topics /cmd_vel /left_sensor /right_sensor
+ros2 bag play src/my_webots_tutorials/results/walker_bag/ --topics /cmd_vel /left_sensor /right_sensor
 ```
 
 Start playback from a specific time offset:
 ```bash
-ros2 bag play my_webots_tutorials/results/walker_bag/ --start-offset 5.0  # Start 5 seconds in
+ros2 bag play src/my_webots_tutorials/results/walker_bag/ --start-offset 5.0  # Start 5 seconds in
 ```
 
 
