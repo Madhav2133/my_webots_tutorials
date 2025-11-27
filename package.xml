@@ -3,7 +3,7 @@
 <package format="3">
   <name>walker</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>Walker Package Imitatijng Roomba</description>
   <maintainer email="vmadhav@umd.edu">madhav2133</maintainer>
   <license>Apache-2.0</license>
 
@@ -11,6 +11,7 @@
 
   <depend>rclcpp</depend>
   <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
   <depend>webots_ros2_driver</depend>
   <depend>pluginlib</depend>
   <depend>std_msgs</depend>

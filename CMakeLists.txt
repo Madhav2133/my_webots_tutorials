@@ -13,33 +13,64 @@ find_package(webots_ros2_driver REQUIRED)
 find_package(pluginlib REQUIRED)
 find_package(std_msgs REQUIRED)
 
-add_executable(walker_node src/walker_node.cpp)
-target_include_directories(walker_node PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>)
-target_compile_features(walker_node PUBLIC c_std_99 cxx_std_17)  # Require C99 and C++17
-ament_target_dependencies(
-  walker_node
-  "rclcpp"
-  "geometry_msgs"
-  "webots_ros2_driver"
-  "pluginlib"
-  "std_msgs"
+# Export the plugin configuration file
+pluginlib_export_plugin_description_file(webots_ros2_driver walker_robot_driver.xml)
+
+# Obstacle avoider
+include_directories(
+  include
 )
 
-install(TARGETS walker_node
-  DESTINATION lib/${PROJECT_NAME})
+add_executable(obstacle_avoider
+  src/obstacle_avoider.cpp
+  src/walker_logic.cpp
+)
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
-  set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
+ament_target_dependencies(obstacle_avoider
+  rclcpp
+  geometry_msgs
+  sensor_msgs
+)
 
+install(TARGETS
+  obstacle_avoider
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+# Walker Robot library
+add_library(
+  ${PROJECT_NAME}
+  SHARED
+  src/walker_node.cpp
+)
+target_include_directories(
+  ${PROJECT_NAME}
+  PRIVATE
+  include
+)
+ament_target_dependencies(
+  ${PROJECT_NAME}
+  pluginlib
+  rclcpp
+  webots_ros2_driver
+)
+install(TARGETS
+  ${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+# Install additional directories.
+install(DIRECTORY
+  launch
+  resource
+  worlds
+  DESTINATION share/${PROJECT_NAME}/
+)
+ament_export_include_directories(
+  include
+)
+ament_export_libraries(
+  ${PROJECT_NAME}
+)
 ament_package()
